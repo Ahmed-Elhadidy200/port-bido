@@ -1,0 +1,557 @@
+Enter<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="description" content="بيدو عاشور – أداة حساب مواقع البورتات لمهندسي الشبكات" />
+  <title>بيدو عاشور | حاسبة البورتات</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ========== DESIGN SYSTEM – BEDO ASHOUR ========== */
+    :root {
+      --bg-deep:       #05070c;
+      --bg-base:       #0b0f17;
+      --bg-card:       rgba(18, 25, 40, 0.75);
+      --bg-card-solid: #0f172a;
+      --bg-input:      #0a0f1a;
+      --border-dim:    #1e2a3e;
+      --border-mid:    #2d3e5a;
+      --border-glow:   #f59e0b;
+      
+      --huawei-primary:  #ff4d6d;
+      --huawei-glow:     rgba(255, 77, 109, 0.25);
+      --zte-primary:     #38bdf8;
+      --zte-glow:        rgba(56, 189, 248, 0.25);
+      --accent:          #fbbf24;
+      --accent-glow:     rgba(251, 191, 36, 0.2);
+      
+      --text-bright:  #f0f3fa;
+      --text-primary: #cbd5e6;
+      --text-muted:   #6b7b9c;
+      --text-dim:     #2d3a55;
+      
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      
+      --font-arabic: 'Tajawal', sans-serif;
+      --font-mono:   'IBM Plex Mono', monospace;
+      
+      --shadow-card: 0 8px 28px rgba(0,0,0,0.6);
+      --transition: 0.2s ease;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg-deep);
+      font-family: var(--font-arabic);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 25% 40%, rgba(56,189,248,0.08) 1px, transparent 1px),
+        radial-gradient(circle at 75% 80%, rgba(255,77,109,0.05) 1px, transparent 1px);
+      background-size: 48px 48px, 64px 64px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app-container {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+      width: 100%;
+      margin: 0 auto;
+      background: rgba(5, 7, 12, 0.65);
+      backdrop-filter: blur(3px);
+      border-radius: 48px;
+      border: 1px solid rgba(56,189,248,0.15);
+      padding: 20px 16px 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-dim);
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .icon-logo {
+      background: linear-gradient(135deg, #fbbf24, #e63946);
+      width: 52px;
+      height: 52px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px rgba(251,191,36,0.3);
+    }
+    .icon-logo svg {
+      width: 30px;
+      height: 30px;
+    }
+    .title h1 {
+      font-size: 28px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #fbbf24, #38bdf8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .title p {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .badge {
+      background: rgba(251,191,36,0.12);
+      border: 1px solid rgba(251,191,36,0.3);
+      border-radius: 60px;
+      padding: 6px 14px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    .input-card {
+      background: var(--bg-card-solid);
+      border: 1px solid var(--border-mid);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+    }
+    .input-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--zte-primary), var(--accent), var(--huawei-primary));
+    }
+    .input-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .input-row {
+      display: flex;
+      gap: 12px;
+    }
+    .port-input {
+      flex: 1;
+      height: 64px;
+      background: var(--bg-input);
+      border: 1.5px solid var(--border-dim);
+      border-radius: var(--radius-md);
+      color: var(--text-bright);
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      padding: 0 12px;
+      outline: none;
+      transition: 0.2s;
+    }
+    .port-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(251,191,36,0.2);
+    }
+    .btn-clear {
+      width: 64px;
+      height: 64px;
+      background: rgba(255,77,109,0.1);
+      border: 1.5px solid rgba(255,77,109,0.3);
+      border-radius: var(--radius-md);
+      color: var(--huawei-primary);
+      font-size: 24px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-clear:active {
+      transform: scale(0.96);
+      background: rgba(255,77,109,0.2);
+    }
+    .error-msg {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #ff4d6d;
+      text-align: center;
+      font-weight: 600;
+      min-height: 24px;
+    }
+    .input-hint {
+      font-size: 10px;
+      color: var(--text-dim);
+      text-align: center;
+      margin-top: 8px;
+      font-family: var(--font-mono);
+    }
+
+    .meta-strip {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-md);
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+    }
+    .meta-item {
+      text-align: center;
+      flex: 1;
+    }
+    .meta-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+    .meta-value {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .vendor-card {
+      background: rgba(18, 25, 40, 0.85);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-mid);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+    .vendor-card.active {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+    }
+    .card-stripe {
+      height: 4px;
+    }
+    .huawei .card-stripe { background: linear-gradient(90deg, #ff4d6d, #c9184a); }
+    .zte .card-stripe    { background: linear-gradient(90deg, #38bdf8, #0284c7); }
+    .card-header {
+      padding: 14px 16px 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-dim);
+    }
+    .vendor-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-family: var(--font-mono);
+    }
+    .huawei .vendor-icon { background: rgba(255,77,109,0.15); color: #ff4d6d; border: 1px solid #ff4d6d55; }
+    .zte .vendor-icon    { background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid #38bdf855; }
+    .vendor-name h3 {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+    .huawei .vendor-name h3 { color: #ff4d6d; }
+    .zte .vendor-name h3    { color: #38bdf8; }
+    .card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      background: rgba(0,0,0,0.3);
+      padding: 8px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border-dim);
+    }
+    .stat-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .huawei .stat-value { color: #ffb3c6; }
+    .zte .stat-value    { color: #b9e6ff; }
+    .stat-value.empty {
+      color: var(--text-dim);
+      font-size: 16px;
+    }
+
+    .empty-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(5,7,12,0.85);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-lg);
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+      pointer-events: none;
+    }
+
+    footer {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border-dim);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.97); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .vendor-card.pop { animation: pop 0.25s ease; }
+  </style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <div class="logo-area">
+      <div class="icon-logo">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="6" width="24" height="16" rx="3" stroke="#fbbf24" stroke-width="1.5"/>
+          <rect x="5" y="10" width="4" height="4" rx="1" fill="#fbbf24" opacity="0.9"/>
+          <rect x="12" y="10" width="4" height="4" rx="1" fill="#38bdf8" opacity="0.9"/>
+          <rect x="19" y="10" width="4" height="4" rx="1" fill="#ff4d6d" opacity="0.9"/>
+          <line x1="7" y1="17" x2="7" y2="20" stroke="#fbbf24" stroke-width="1.5"/>
+          <line x1="14" y1="17" x2="14" y2="20" stroke="#38bdf8" stroke-width="1.5"/>
+          <line x1="21" y1="17" x2="21" y2="20" stroke="#ff4d6d" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="title">
+        <h1>بيدو عاشور</h1>
+        <p>حاسبة مواقع البورتات</p>
+      </div>
+    </div>
+    <div class="badge">BEDO ASHOUR</div>
+  </div>
+
+  <div class="input-card">
+    <span class="input-label">📡 رقم البورت الرئيسي</span>
+    <div class="input-row">
+      <input type="number" id="portInput" class="port-input" placeholder="0" min="1" max="65535" inputmode="numeric" autocomplete="off" />
+      <button class="btn-clear" id="btnClear">✕</button>
+    </div>
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="input-hint">المدى المسموح: 1 – 65535</div>
+  </div>
+
+  <div class="meta-strip" id="portMeta" style="display: none;">
+    <div class="meta-item"><div class="meta-label">البورت</div><div class="meta-value" id="metaPort">–</div></div>
+    <div class="meta-item"><div class="meta-label">شيلاف</div><div class="meta-value" id="metaShelf">–</div></div>
+    <div class="meta-item"><div class="meta-label">مشط</div><div class="meta-value" id="metaComb">–</div></div>
+    <div class="meta-item"><div class="meta-label">بيس بورت</div><div class="meta-value" id="metaBase">–</div></div>
+  </div>
+
+  <div class="results-grid">
+    <!-- Huawei Card -->
+    <div class="vendor-card huawei" id="huaweiCard">
+      <div class="card-stripe"></div>
+      <div class="card-header">
+        <div class="vendor-icon">HW</div>
+        <div class="vendor-name"><h3>HUAWEI</h3></div>
+      </div>
+      <div class="card-body">
+        <div class="stat"><span class="stat-label">شيلاف</span><span class="stat-value empty" id="hw-shelf">–</span></div>
+        <div class="stat"><span class="stat-label">مشط</span><span class="stat-value empty" id="hw-comb">–</span></div>
+        <div class="stat"><span class="stat-label">بورت</span><span class="stat-value empty" id="hw-port">–</span></div>
+      </div>
+      <div class="empty-overlay" id="huaweiOverlay"><span>📡 أدخل رقم البورت</span></div>
+    </div>
+    <!-- ZTE / Nokia Card -->
+    <div class="vendor-card zte" id="zteCard">
+      <div class="card-stripe"></div>
+      <div class="card-header">
+        <div class="vendor-icon">ZTE</div>
+        <div class="vendor-name"><h3>ZTE / Nokia</h3></div>
+      </div>
+      <div class="card-body">
+        <div class="stat"><span class="stat-label">شيلاف</span><span class="stat-value empty" id="zte-shelf">–</span></div>
+        <div class="stat"><span class="stat-label">مشط</span><span class="stat-value empty" id="zte-comb">–</span></div>
+        <div class="stat"><span class="stat-label">بورت</span><span class="stat-value empty" id="zte-port">–</span></div>
+      </div>
+      <div class="empty-overlay" id="zteOverlay"><span>📡 أدخل رقم البورت</span></div>
+    </div>
+  </div>
+
+  <footer>
+    <span>© الحديدي – جميع الحقوق محفوظة</span>
+    <span>الإصدار 2.0</span>
+  </footer>
+</div>
+
+<script>
+  // ========== وظيفة الحسابات (نفس المنطق الأصلي تماماً) ==========
+  function calcBase(P) {
+    const zero = P - 1;
+    const shelf = Math.floor(zero / 1024) + 1;
+    const comb = Math.floor((zero % 1024) / 16) + 1;
+    const base = (zero % 16) + 1;
+    return { shelf, comb, basePort: base };
+  }
+
+  function calcAll(P) {
+    const { shelf, comb, basePort } = calcBase(P);
+    const hwResult = { shelf, comb, subPort: basePort };
+    let zteShelf = shelf, zteComb = comb, zteSubPort;
+    if (basePort === 16) {
+      zteComb = comb + 1;
+      zteSubPort = 1;
+      if (zteComb > 64) { zteComb = 1; zteShelf = shelf + 1; }
+    } else {
+      zteSubPort = basePort + 1;
+      if (zteSubPort === 16) zteSubPort = 15;
+    }
+    return { huawei: hwResult, zte: { shelf: zteShelf, comb: zteComb, subPort: zteSubPort } };
+  }
+
+  // ربط العناصر
+  const portInput = document.getElementById('portInput');
+  const btnClear = document.getElementById('btnClear');
+  const errorMsg = document.getElementById('errorMsg');
+  const portMeta = document.getElementById('portMeta');
+  const metaPort = document.getElementById('metaPort');
+  const metaShelf = document.getElementById('metaShelf');
+  const metaComb = document.getElementById('metaComb');
+  const metaBase = document.getElementById('metaBase');
+  const huaweiCard = document.getElementById('huaweiCard');
+  const zteCard = document.getElementById('zteCard');
+  const huaweiOverlay = document.getElementById('huaweiOverlay');
+  const zteOverlay = document.getElementById('zteOverlay');
+  const fields = {
+    'hw-shelf': document.getElementById('hw-shelf'),
+    'hw-comb': document.getElementById('hw-comb'),
+    'hw-port': document.getElementById('hw-port'),
+    'zte-shelf': document.getElementById('zte-shelf'),
+    'zte-comb': document.getElementById('zte-comb'),
+    'zte-port': document.getElementById('zte-port'),
+  };
+
+  function setVal(el, val) {
+    el.textContent = val;
+    if (val === '–') el.classList.add('empty');
+    else el.classList.remove('empty');
+  }
+
+  function showResults(P) {
+    const { huawei, zte } = calcAll(P);
+    const { shelf, comb, basePort } = calcBase(P);
+    metaPort.textContent = P;
+    metaShelf.textContent = shelf;
+    metaComb.textContent = comb;
+    metaBase.textContent = basePort;
+    portMeta.style.display = 'flex';
+    setVal(fields['hw-shelf'], huawei.shelf);
+    setVal(fields['hw-comb'], huawei.comb);
+    setVal(fields['hw-port'], huawei.subPort);
+    setVal(fields['zte-shelf'], zte.shelf);
+    setVal(fields['zte-comb'], zte.comb);
+    setVal(fields['zte-port'], zte.subPort);
+    huaweiOverlay.style.display = 'none';
+    zteOverlay.style.display = 'none';
+    huaweiCard.classList.add('pop');
+    zteCard.classList.add('pop');
+    setTimeout(() => {
+      huaweiCard.classList.remove('pop');
+      zteCard.classList.remove('pop');
+    }, 250);
+  }
+
+  function clearResults() {
+    Object.values(fields).forEach(el => setVal(el, '–'));
+    portMeta.style.display = 'none';
+    huaweiOverlay.style.display = 'flex';
+    zteOverlay.style.display = 'flex';
+  }
+
+  function handleInput() {
+    const raw = portInput.value.trim();
+    errorMsg.textContent = '';
+    portInput.classList.remove('error');
+    if (raw === '' || raw === '0') { clearResults(); return; }
+    const P = parseInt(raw, 10);
+    if (isNaN(P) || P < 1) {
+      errorMsg.textContent = 'يرجى إدخال رقم صحيح وموجب';
+      portInput.classList.add('error');
+      clearResults();
+      return;
+    }
+    if (P > 65535) {
+      errorMsg.textContent = 'الحد الأقصى هو 65535';
+      portInput.classList.add('error');
+      clearResults();
+      return;
+    }
+    showResults(P);
+  }
+
+  portInput.addEventListener('input', handleInput);
+  btnClear.addEventListener('click', () => {
+    portInput.value = '';
+    portInput.classList.remove('error');
+    errorMsg.textContent = '';
+    clearResults();
+    portInput.focus();
+  });
+  portInput.addEventListener('keydown', (e) => {
+    const allowed = ['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Enter','Home','End'];
+    if (allowed.includes(e.key)) return;
+    if (e.ctrlKey || e.metaKey) return;
+    if (!/^\d$/.test(e.key)) e.preventDefault();
+  });
+  window.addEventListener('load', () => setTimeout(() => portInput.focus(), 200));
+</script>
+</body>
+  </html>
